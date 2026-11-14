@@ -1,4 +1,4 @@
-"""Start Gazebo Garden and a standing, wheel-driven Go2-W, with optional RViz."""
+"""Start Gazebo Fortress and a standing, wheel-driven Go2-W, with optional RViz."""
 
 import os
 import shlex
@@ -55,8 +55,8 @@ def resource_environment():
 
     # Mesh URIs include the package name, so Gazebo searches its parent share directory.
     additions = {
-        'GZ_SIM_RESOURCE_PATH': [str(description.parent), str(simulation / 'worlds')],
-        'GZ_SIM_SYSTEM_PLUGIN_PATH': [str(Path(get_package_prefix('gz_ros2_control')) / 'lib')],
+        'IGN_GAZEBO_RESOURCE_PATH': [str(description.parent), str(simulation / 'worlds')],
+        'IGN_GAZEBO_SYSTEM_PLUGIN_PATH': [str(Path(get_package_prefix('gz_ros2_control')) / 'lib')],
     }
 
     for name, paths in additions.items():
@@ -135,7 +135,7 @@ def launch_simulation(context):
 
     return [
         *[SetEnvironmentVariable(name, environment[name])
-          for name in ('GZ_SIM_RESOURCE_PATH', 'GZ_SIM_SYSTEM_PLUGIN_PATH')],
+          for name in ('IGN_GAZEBO_RESOURCE_PATH', 'IGN_GAZEBO_SYSTEM_PLUGIN_PATH')],
         gazebo,
         spawn]
 
