@@ -49,6 +49,10 @@
     <xacro:wheel_contact leg="RR" />
     <gazebo>
       <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <!-- The Humble plugin reads the model from the parameter service of
+             this node instead of the robot_description topic used on Jazzy. -->
+        <robot_param_node>go2w_state_publisher</robot_param_node>
+        <robot_param>robot_description</robot_param>
         <parameters>$(arg controller_file)</parameters>
         <hold_joints>true</hold_joints>
         <position_proportional_gain>${settings.position_proportional_gain}</position_proportional_gain>
