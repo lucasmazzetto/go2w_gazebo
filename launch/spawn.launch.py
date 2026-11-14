@@ -4,6 +4,7 @@ import asyncio
 import math
 import os
 import re
+import shutil
 import signal
 import tempfile
 import xml.etree.ElementTree as ET
@@ -439,6 +440,15 @@ def enabled(context, name):
     return setting == 'true'
 
 
+def gazebo_cli():
+    """Return the Gazebo CLI executable and message type prefix for this install.
+
+    ROS 2 Humble binaries build against Gazebo Fortress, whose command is `ign`
+    and whose transport advertises `ignition.msgs.*` types.
+    """
+    return ('gz', 'gz.msgs') if shutil.which('gz') else ('ign', 'ignition.msgs')
+
+
 async def run_command(context, command, timeout):
     """
     @brief Run a bounded command asynchronously and clean up its subprocess group.
@@ -513,10 +523,11 @@ async def scene_models(context, world, timeout):
     @throws RuntimeError: If the scene query command fails.
     @throws asyncio.TimeoutError: If the scene query exceeds the timeout.
     """
+    cli, msgs = gazebo_cli()
     output = await run_command(
         context,
-        ['gz', 'service', '-s', f'/world/{world}/scene/info',
-         '--reqtype', 'gz.msgs.Empty', '--reptype', 'gz.msgs.Scene',
+        [cli, 'service', '-s', f'/world/{world}/scene/info',
+         '--reqtype', f'{msgs}.Empty', '--reptype', f'{msgs}.Scene',
          '--timeout', '2000', '--req', ''],
         timeout)
 
@@ -535,7 +546,7 @@ async def world_ready(context, services, limit):
     @throws RuntimeError: If the service-list query command fails.
     @throws asyncio.TimeoutError: If the query exceeds the timeout.
     """
-    output = await run_command(context, ['gz', 'service', '--list'], limit)
+    output = await run_command(context, [gazebo_cli()[0], 'service', '--list'], limit)
     return services.issubset(output.splitlines())
 
 

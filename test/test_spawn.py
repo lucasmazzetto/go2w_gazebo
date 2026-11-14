@@ -21,6 +21,9 @@ from launch.event_handlers import OnProcessExit
 from launch.events import Shutdown
 from launch.events.process import ProcessExited
 
+# The Gazebo CLI name follows the installed Gazebo generation: Fortress uses ign.
+CLI = 'gz' if shutil.which('gz') else 'ign'
+
 
 SERVICES = '/world/test/create\n/world/test/scene/info\n'
 POSE = dict(x=1.0, y=-2.0, z=0.43, R=0.1, P=-0.2, Y=0.3)
@@ -58,10 +61,10 @@ def test_spawn_waits_for_services_and_actual_insertion(launch_module, monkeypatc
         calls.append(args)
         assert timeout > 0
         assert ctx.emit_event.await_count == 0
-        if args == ['gz', 'service', '--list']:
+        if args == [CLI, 'service', '--list']:
             service_calls += 1
             return SERVICES if service_calls > 1 else '/world/test/create\n'
-        if args[0] == 'gz':
+        if args[0] == CLI:
             scene_calls += 1
             return 'model {\n name: "robot"\n}\n' if scene_calls == 3 else 'name: "test"\n'
         assert scene_calls == 1  # Duplicate check precedes the creation request.
@@ -87,9 +90,9 @@ def test_spawn_failures_do_not_start_controllers(launch_module, monkeypatch, tmp
     ctx, created = context(), []
 
     async def command(_context, args, timeout):
-        if args == ['gz', 'service', '--list']:
+        if args == [CLI, 'service', '--list']:
             return '' if failure == 'world' else SERVICES
-        if args[0] == 'gz':
+        if args[0] == CLI:
             if failure == 'scene':
                 raise asyncio.TimeoutError
             return 'model {\n name: "robot"\n}\n' if failure == 'duplicate' else 'name: "test"\n'

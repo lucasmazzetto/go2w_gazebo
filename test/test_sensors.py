@@ -1,6 +1,7 @@
 """Check sensor frames, physical invariants and installed configuration."""
 
 import math
+import shutil
 import xml.etree.ElementTree as ET
 
 import pytest
@@ -156,8 +157,9 @@ def test_converted_sdf_retains_sensors_and_masks(
         robot = sensor_model[3]
     path = tmp_path / 'robot.urdf'
     path.write_text(ET.tostring(robot, encoding='unicode'))
-    converted = subprocess.run(['gz', 'sdf', '-p', str(path)], check=True,
-                               capture_output=True, text=True, timeout=30)
+    converted = subprocess.run(
+        ['gz' if shutil.which('gz') else 'ign', 'sdf', '-p', str(path)], check=True,
+        capture_output=True, text=True, timeout=30)
     sdf = ET.fromstring(converted.stdout)
     sensors = sdf.findall('.//sensor')
     assert {s.get('name') for s in sensors} == {'body_imu', 'lidar_imu', 'lidar', 'camera'}
