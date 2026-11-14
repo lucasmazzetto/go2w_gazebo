@@ -3,7 +3,7 @@
 <package format="3">
   <name>go2w_gazebo</name>
   <version>0.1.0</version>
-  <description>Standing and wheel-driving simulation of Unitree Go2-W in Gazebo Harmonic.</description>
+  <description>Standing and wheel-driving simulation of Unitree Go2-W in Gazebo Garden.</description>
   <maintainer email="lucasmazzetto@users.noreply.github.com">Lucas Mazzetto</maintainer>
   <license>MIT</license>
   <url type="repository">https://github.com/lucasmazzetto/go2w_simulation</url>

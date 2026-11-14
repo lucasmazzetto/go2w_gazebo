@@ -1,4 +1,4 @@
-"""Start Gazebo Harmonic and a standing, wheel-driven Go2-W, with optional RViz."""
+"""Start Gazebo Garden and a standing, wheel-driven Go2-W, with optional RViz."""
 
 import os
 import shlex

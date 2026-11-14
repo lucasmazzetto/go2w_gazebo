@@ -1,6 +1,6 @@
 # Go2-W Gazebo
 
-Simulation of the Unitree Go2-W using ROS 2 Jazzy Jalisco and Gazebo Harmonic. This package uses the model from [go2w_description](../go2w_description/README.md) and provides a standing posture, four-wheel driving, odometry, joint feedback, IMUs, LiDAR, a front RGB camera, and Unitree LowState telemetry.
+Simulation of the Unitree Go2-W using ROS 2 Humble and Gazebo Garden. This package uses the model from [go2w_description](../go2w_description/README.md) and provides a standing posture, four-wheel driving, odometry, joint feedback, IMUs, LiDAR, a front RGB camera, and Unitree LowState telemetry.
 
 ## 🚀 Usage
 
